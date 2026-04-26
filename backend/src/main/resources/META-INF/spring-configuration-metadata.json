@@ -1,0 +1,40 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "com.plantdisease.config.AppProperties",
+      "sourceType": "com.plantdisease.config.AppProperties"
+    },
+    {
+      "name": "app.jwt",
+      "type": "com.plantdisease.config.AppProperties$Jwt",
+      "sourceType": "com.plantdisease.config.AppProperties",
+      "sourceMethod": "jwt()"
+    },
+    {
+      "name": "app.ai-service",
+      "type": "com.plantdisease.config.AppProperties$AiService",
+      "sourceType": "com.plantdisease.config.AppProperties",
+      "sourceMethod": "aiService()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.jwt.secret",
+      "type": "java.lang.String",
+      "sourceType": "com.plantdisease.config.AppProperties$Jwt"
+    },
+    {
+      "name": "app.jwt.expiration-ms",
+      "type": "java.lang.Long",
+      "sourceType": "com.plantdisease.config.AppProperties$Jwt"
+    },
+    {
+      "name": "app.ai-service.url",
+      "type": "java.lang.String",
+      "sourceType": "com.plantdisease.config.AppProperties$AiService"
+    }
+  ],
+  "hints": []
+}
+

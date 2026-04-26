@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: plant-disease-backend
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:plant_disease_db}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change_me}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  ai-service:
+    url: ${AI_SERVICE_URL:http://ai-service:8000}
+
