@@ -49,7 +49,7 @@ services:
       DB_NAME: ${DB_NAME:-plant_disease_db}
       DB_USER: root
       DB_PASSWORD: ${DB_PASSWORD:-root}
-      JWT_SECRET: ${JWT_SECRET:-change_me_to_a_strong_secret}
+      JWT_SECRET: ${JWT_SECRET:-change_me_to_a_strong_secret_32_chars_min}
       JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
       AI_SERVICE_URL: http://ai-service:8000
     ports:
