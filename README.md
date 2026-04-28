@@ -1,44 +1,41 @@
 # Plant Disease Detection Web Application
 
-Starter monorepo structure for a graduation project (PFE).
+Monorepo for a PFE project: plant disease detection with a React frontend, Spring Boot API, and FastAPI AI service.
 
-## Modules
-- `frontend/`: React + Tailwind CSS
-- `backend/`: Spring Boot + MySQL + JWT
-- `ai-service/`: FastAPI + TensorFlow/Keras
-- `docs/`: UML, architecture diagrams, notes, and documentation
+## Stack
+- `frontend/`: React + Vite + Tailwind CSS
+- `backend/`: Spring Boot + Spring Security + JWT + MySQL
+- `ai-service/`: FastAPI (health endpoint; prediction endpoint required by backend)
+- `docs/`: architecture, setup, API docs, troubleshooting, roadmap
 
-## Quick Structure
-- `frontend/src/`
-- `backend/src/main/java/com/plantdisease/`
-- `backend/src/main/resources/`
-- `ai-service/app/`
-- `docs/uml/`, `docs/diagrams/`, `docs/notes/`
-
-## Run everything with Docker
-
-Each service now has its own container definition and the root `docker-compose.yml` starts the full stack:
-
-- `frontend` on http://localhost:3000
-- `backend` on http://localhost:8080
-- `ai-service` on http://localhost:8000
-- `mysql` on port 3306
-
-### Start the stack
+## Quickstart (Docker)
 
 ```powershell
 docker compose up --build
 ```
 
-### Stop the stack
+Stop the stack:
 
 ```powershell
 docker compose down
 ```
 
-### Notes
+## Service URLs (local)
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8080`
+- AI service: `http://localhost:8000`
+- MySQL host port: `3307` (container uses `3306`)
 
-- The backend connects to MySQL using the Docker service name `mysql`.
-- The backend also has an `AI_SERVICE_URL` placeholder pointing to `http://ai-service:8000`.
-- The frontend image is built with Vite and served through Nginx for a production-style container.
+## Environment Notes
+- Copy `.env.example` to `.env` and update secrets.
+- `VITE_API_BASE_URL` should include `/api` (example: `http://localhost:8080/api`).
+- Cloudinary credentials are required for image upload in the backend.
 
+## API Quick Reference
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/scan` (multipart form, `file`, JWT required)
+- `GET /api/scan/history` (JWT required)
+
+## Documentation
+Start with `docs/README.md` for setup, architecture, and API details.
