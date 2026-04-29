@@ -4,8 +4,8 @@ from app.models.plant_model import predict
 
 SOLUTIONS = {
     "Apple scab": {
-        "chemical":   "Apply fungicides like captan or myclobutanil",
-        "organic":    "Use neem oil spray, remove fallen leaves",
+        "chemical":   "Apply fungicides like captan or myclobutanil every 7-10 days",
+        "organic":    "Use neem oil spray, remove and destroy fallen leaves",
         "prevention": "Plant resistant varieties, ensure good air circulation"
     },
     "Black rot": {
@@ -39,17 +39,22 @@ SOLUTIONS = {
         "prevention": "Avoid wetting leaves, rotate crops yearly"
     },
     "Bacterial spot": {
-        "chemical":   "Copper-based bactericide spray",
+        "chemical":   "Copper-based bactericide spray every 7 days",
         "organic":    "Remove infected leaves, avoid working with wet plants",
         "prevention": "Use disease-free seeds, rotate crops yearly"
     },
     "Powdery mildew": {
-        "chemical":   "Apply sulfur-based fungicide",
+        "chemical":   "Apply sulfur-based or systemic fungicide",
         "organic":    "Neem oil spray, remove infected leaves",
         "prevention": "Ensure good air circulation, avoid overhead watering"
     },
     "Gray leaf spot": {
         "chemical":   "Apply strobilurin fungicide",
+        "organic":    "Remove infected leaves, improve air circulation",
+        "prevention": "Rotate crops, avoid overhead irrigation"
+    },
+    "Cercospora leaf spot gray leaf spot": {
+        "chemical":   "Apply strobilurin or triazole fungicide",
         "organic":    "Remove infected leaves, improve air circulation",
         "prevention": "Rotate crops, avoid overhead irrigation"
     },
@@ -64,9 +69,84 @@ SOLUTIONS = {
         "prevention": "Rotate crops, use resistant hybrids"
     },
     "Haunglongbing": {
-        "chemical":   "No cure available, remove infected trees",
+        "chemical":   "No cure available, remove infected trees immediately",
         "organic":    "Control Asian citrus psyllid with insecticidal soap",
         "prevention": "Use certified disease-free plants, monitor for psyllids"
+    },
+    "Isariopsis leaf spot": {
+        "chemical":   "Apply mancozeb fungicide every 10 days",
+        "organic":    "Remove infected leaves, apply copper spray",
+        "prevention": "Ensure good air circulation, avoid wetting leaves"
+    },
+    "Leaf scorch": {
+        "chemical":   "Apply appropriate fungicide based on severity",
+        "organic":    "Remove infected leaves, improve drainage",
+        "prevention": "Avoid water stress, ensure proper irrigation"
+    },
+    "Esca (black measles)": {
+        "chemical":   "No effective chemical cure, prune infected wood",
+        "organic":    "Remove and destroy infected wood immediately",
+        "prevention": "Protect pruning wounds, use clean sterilized tools"
+    },
+    "Leaf blight (isariopsis leaf spot)": {
+        "chemical":   "Apply mancozeb or copper fungicide",
+        "organic":    "Remove infected leaves, apply neem oil",
+        "prevention": "Avoid overhead watering, rotate crops"
+    },
+    "Mosaic virus": {
+        "chemical":   "No chemical cure, remove and destroy infected plants",
+        "organic":    "Control aphid vectors with insecticidal soap",
+        "prevention": "Use virus-free seeds, control insect vectors"
+    },
+    "Yellow leaf curl virus": {
+        "chemical":   "Control whitefly with systemic insecticides",
+        "organic":    "Use reflective mulch, remove infected plants",
+        "prevention": "Use resistant varieties, control whitefly population"
+    },
+    "Spider mites two-spotted spider mite": {
+        "chemical":   "Apply miticide or insecticidal soap",
+        "organic":    "Neem oil spray, introduce predatory mites",
+        "prevention": "Maintain humidity, avoid water stress"
+    },
+    "Target spot": {
+        "chemical":   "Apply chlorothalonil or mancozeb fungicide",
+        "organic":    "Remove infected leaves, improve air circulation",
+        "prevention": "Rotate crops, avoid overhead watering"
+    },
+    "Tomato mosaic virus": {
+        "chemical":   "No chemical cure, remove infected plants",
+        "organic":    "Wash hands and tools regularly, remove infected plants",
+        "prevention": "Use resistant varieties, sterilize tools between plants"
+    },
+    "Bacterial blight": {
+        "chemical":   "Apply copper-based bactericide",
+        "organic":    "Remove infected plant parts, avoid overhead watering",
+        "prevention": "Use disease-free seeds, rotate crops"
+    },
+    "Citrus greening": {
+        "chemical":   "No cure, remove infected trees",
+        "organic":    "Control psyllid insects with neem oil",
+        "prevention": "Use certified disease-free trees, monitor regularly"
+    },
+    "Corn smut": {
+        "chemical":   "Apply fungicide at early growth stages",
+        "organic":    "Remove galls before they burst, destroy infected material",
+        "prevention": "Plant resistant varieties, rotate crops"
+    },
+    "Fire blight": {
+        "chemical":   "Apply copper bactericide or streptomycin during bloom",
+        "organic":    "Prune infected branches 30cm below visible symptoms",
+        "prevention": "Avoid excessive nitrogen, plant resistant varieties"
+    },
+    "Scab": {
+        "chemical":   "Apply fungicide containing captan or mancozeb",
+        "organic":    "Remove infected leaves and fruit, apply neem oil",
+        "prevention": "Ensure good air circulation, avoid wetting foliage"
+    },
+    "Tomato yellow leaf curl virus": {
+    "chemical":   "Control whitefly with systemic insecticides",
+    "organic":    "Use reflective mulch, remove infected plants",
+    "prevention": "Use resistant varieties, control whitefly population"
     },
     "Healthy": {
         "chemical":   "No treatment needed",
@@ -76,20 +156,36 @@ SOLUTIONS = {
 }
 
 SEVERITY = {
-    "Early blight":        "moderate",
-    "Late blight":         "high",
-    "Bacterial spot":      "moderate",
-    "Septoria leaf spot":  "moderate",
-    "Leaf mold":           "low",
-    "Powdery mildew":      "moderate",
-    "Black rot":           "high",
-    "Apple scab":          "moderate",
-    "Cedar apple rust":    "moderate",
-    "Gray leaf spot":      "moderate",
-    "Common rust":         "moderate",
-    "Northern leaf blight":"moderate",
-    "Haunglongbing":       "high",
-    "Healthy":             "none"
+    "Apple scab":                              "moderate",
+    "Black rot":                               "high",
+    "Cedar apple rust":                        "moderate",
+    "Early blight":                            "moderate",
+    "Late blight":                             "high",
+    "Leaf mold":                               "low",
+    "Septoria leaf spot":                      "moderate",
+    "Bacterial spot":                          "moderate",
+    "Powdery mildew":                          "moderate",
+    "Gray leaf spot":                          "moderate",
+    "Cercospora leaf spot gray leaf spot":     "moderate",
+    "Common rust":                             "moderate",
+    "Northern leaf blight":                    "moderate",
+    "Haunglongbing":                           "high",
+    "Isariopsis leaf spot":                    "moderate",
+    "Leaf scorch":                             "low",
+    "Esca (black measles)":                    "high",
+    "Leaf blight (isariopsis leaf spot)":      "moderate",
+    "Mosaic virus":                            "high",
+    "Yellow leaf curl virus":                  "high",
+    "Spider mites two-spotted spider mite":    "moderate",
+    "Target spot":                             "moderate",
+    "Tomato mosaic virus":                     "high",
+    "Bacterial blight":                        "moderate",
+    "Citrus greening":                         "high",
+    "Corn smut":                               "moderate",
+    "Fire blight":                             "high",
+    "Scab":                                    "moderate",
+    "Tomato yellow leaf curl virus": "high",
+    "Healthy":                                 "none"
 }
 
 async def predict_disease(file):
