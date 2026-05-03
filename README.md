@@ -8,34 +8,21 @@ Monorepo for a PFE project: plant disease detection with a React frontend, Sprin
 - `ai-service/`: FastAPI (health endpoint; prediction endpoint required by backend)
 - `docs/`: architecture, setup, API docs, troubleshooting, roadmap
 
-## Quickstart (Docker)
+## Quick Structure
+- `frontend/src/`
+- `backend/src/main/java/com/plantdisease/`
+- `backend/src/main/resources/`
+- `ai-service/app/`
+- `docs/uml/`, `docs/diagrams/`, `docs/notes/`
 
-```powershell
-docker compose up --build
-```
+## Run everything with Docker
 
-Stop the stack:
+Each service now has its own container definition and the root `docker-compose.yml` starts the full stack:
 
-```powershell
-docker compose down
-```
+- `frontend` on http://localhost:3000
+- `backend` on http://localhost:8080
+- `ai-service` on http://localhost:8000
+- `mysql` on port 3306
 
-## Service URLs (local)
-- Frontend: `http://localhost:3000`
-- Backend: `http://localhost:8080`
-- AI service: `http://localhost:8000`
-- MySQL host port: `3307` (container uses `3306`)
 
-## Environment Notes
-- Copy `.env.example` to `.env` and update secrets.
-- `VITE_API_BASE_URL` should include `/api` (example: `http://localhost:8080/api`).
-- Cloudinary credentials are required for image upload in the backend.
 
-## API Quick Reference
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `POST /api/scan` (multipart form, `file`, JWT required)
-- `GET /api/scan/history` (JWT required)
-
-## Documentation
-Start with `docs/README.md` for setup, architecture, and API details.

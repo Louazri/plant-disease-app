@@ -5,5 +5,5 @@ router = APIRouter()
 
 @router.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    result = predict_disease(file)
+    result = await predict_disease(file)
     return result
