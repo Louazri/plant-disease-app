@@ -1,12 +1,12 @@
 # Plant Disease Detection Web Application
 
-Starter monorepo structure for a graduation project (PFE).
+Monorepo for a PFE project: plant disease detection with a React frontend, Spring Boot API, and FastAPI AI service.
 
-## Modules
-- `frontend/`: React + Tailwind CSS
-- `backend/`: Spring Boot + MySQL + JWT
-- `ai-service/`: FastAPI + TensorFlow/Keras
-- `docs/`: UML, architecture diagrams, notes, and documentation
+## Stack
+- `frontend/`: React + Vite + Tailwind CSS
+- `backend/`: Spring Boot + Spring Security + JWT + MySQL
+- `ai-service/`: FastAPI (health endpoint; prediction endpoint required by backend)
+- `docs/`: architecture, setup, API docs, troubleshooting, roadmap
 
 ## Quick Structure
 - `frontend/src/`
