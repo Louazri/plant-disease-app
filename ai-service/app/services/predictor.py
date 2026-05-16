@@ -1,6 +1,7 @@
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import io
 from app.models.plant_model import predict
+import logging
 
 SOLUTIONS = {
     "Apple scab": {
@@ -191,6 +192,8 @@ SEVERITY = {
 from groq import Groq
 import os
 
+logger = logging.getLogger("ai-service")
+
 def generate_explanation(plant: str, disease: str, confidence: float, severity: str, solutions: dict) -> str:
     try:
         client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -223,10 +226,20 @@ def generate_explanation(plant: str, disease: str, confidence: float, severity: 
         print(f"Groq API error: {e}")
         return f"Your {plant} plant has been detected with {disease}. Please follow the recommended treatments below."
 
-async def predict_disease(file):
-    contents = await file.read()
-    img      = Image.open(io.BytesIO(contents))
-    result   = predict(img)
+async def predict_disease(contents: bytes):
+    try:
+        img = Image.open(io.BytesIO(contents))
+        img.load()
+        img = img.convert("RGB")
+    except (UnidentifiedImageError, OSError, ValueError) as exc:
+        logger.warning("Invalid image payload: %s", exc)
+        raise ValueError("Corrupted image file")
+
+    try:
+        result = predict(img)
+    except Exception as exc:
+        logger.exception("Model prediction failed")
+        raise RuntimeError("Prediction failed") from exc
 
     disease     = result["disease"]
     disease_key = disease.capitalize()

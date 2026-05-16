@@ -169,7 +169,20 @@ function Home() {
       const data = await detectPlantDisease(selectedFile);
       setPrediction(data || null);
     } catch (error) {
-      setErrorMessage(error?.response?.data?.message || "Prediction failed. Please try again.");
+      const status = error?.response?.status;
+      const apiMessage = error?.response?.data?.message;
+
+      if (status === 413) {
+        setErrorMessage("Image is too large. Please upload a file up to 10MB.");
+      } else if (status === 415) {
+        setErrorMessage("Unsupported format. Please upload a JPG, PNG, or WEBP image.");
+      } else if (status === 400) {
+        setErrorMessage(apiMessage || "The image looks corrupted. Please upload a clearer photo.");
+      } else if (status === 422) {
+        setErrorMessage(apiMessage || "Low confidence prediction. Please upload a clearer leaf image.");
+      } else {
+        setErrorMessage(apiMessage || "Prediction failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
