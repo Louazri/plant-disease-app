@@ -5,28 +5,40 @@ import com.plantdisease.exception.CustomException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
+
 @Service
 @RequiredArgsConstructor
 public class AIClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(AIClient.class);
 
     @Value("${app.ai-service.url}")
     private String aiServiceUrl;
 
     private final ObjectMapper objectMapper;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     public PredictionResponse predict(MultipartFile file) {
 
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = restTemplateBuilder
+                .setConnectTimeout(Duration.ofSeconds(5))
+                .setReadTimeout(Duration.ofSeconds(30))
+                .build();
 
         ByteArrayResource resource;
         try {
@@ -61,10 +73,14 @@ public class AIClient {
                             PredictionResponse.class
                     );
             return response.getBody();
+        } catch (ResourceAccessException ex) {
+            logger.warn("AI service timeout or connection error", ex);
+            throw new CustomException("AI service timeout. Please try again.");
         } catch (RestClientResponseException ex) {
             String aiMessage = extractMessage(ex.getResponseBodyAsString());
             throw new CustomException(aiMessage != null ? aiMessage : "AI service error");
         } catch (Exception ex) {
+            logger.error("AI service request failed", ex);
             throw new CustomException("AI service unavailable");
         }
     }

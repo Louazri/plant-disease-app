@@ -30,21 +30,13 @@ public class ScanService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
+    @Transactional
     public PredictionResponse processScan(MultipartFile file, String userEmail) {
-        //1find user
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomException("User not found"));
-        //2upload image to cloudinary
-        String imageUrl = cloudinaryService.uploadImage(file);
-        //3Save scan
-        Scan scan = Scan.builder()
-                .imageUrl(imageUrl)
-                .createdAt(LocalDateTime.now())
-                .user(user)
-                .build();
-        scanRepository.save(scan);
 
-        //4Send image to AI Service
+        String imageUrl = cloudinaryService.uploadImage(file);
+
         PredictionResponse aiResult = aiClient.predict(file);
         if (aiResult == null) {
             throw new CustomException("AI service returned an empty response");
@@ -53,8 +45,15 @@ public class ScanService {
             String message = aiResult.getMessage() != null ? aiResult.getMessage() : "AI service could not process the image";
             throw new CustomException(message);
         }
-        //5Save prediction result
-        Prediction  prediction = Prediction.builder()
+
+        Scan scan = Scan.builder()
+                .imageUrl(imageUrl)
+                .createdAt(LocalDateTime.now())
+                .user(user)
+                .build();
+        scanRepository.save(scan);
+
+        Prediction prediction = Prediction.builder()
                 .scan(scan)
                 .plant(aiResult.getPlant())
                 .disease(aiResult.getDisease())
@@ -65,7 +64,7 @@ public class ScanService {
                 .topPredictions(toJson(aiResult.getTopPredictions()))
                 .build();
         predictionRepository.save(prediction);
-        //6return response
+
         return aiResult;
     }
 
